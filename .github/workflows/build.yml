@@ -61,7 +61,7 @@ jobs:
   build-firmware:
     name: Build Firmware
     needs: determine-version
-    uses: esphome/workflows/.github/workflows/build.yml@3c4e8446aa1029f1c346a482034b3ee1489077ca  # 2026.4.0
+    uses: esphome/workflows/.github/workflows/build.yml@025a1e6255610c498ed590403b7e510b69e474df  # 2026.4.1
     with:
       files: |
         m5stack-atom-echo/m5stack-atom-echo.factory.yaml
@@ -111,9 +111,10 @@ jobs:
       - build-firmware
       - determine-version
       - clean-draft-assets
-    uses: esphome/workflows/.github/workflows/upload-to-gh-release.yml@3c4e8446aa1029f1c346a482034b3ee1489077ca  # 2026.4.0
+    uses: esphome/workflows/.github/workflows/upload-to-gh-release.yml@025a1e6255610c498ed590403b7e510b69e474df  # 2026.4.1
     with:
       version: ${{ needs.determine-version.outputs.version }}
+      draft: true
 
   remove-pending-warning:
     name: Remove Pending Warning

@@ -58,7 +58,7 @@ jobs:
   upload-to-r2:
     name: Upload to R2
     needs: prepare-artifacts
-    uses: esphome/workflows/.github/workflows/upload-to-r2.yml@3c4e8446aa1029f1c346a482034b3ee1489077ca  # 2026.4.0
+    uses: esphome/workflows/.github/workflows/upload-to-r2.yml@025a1e6255610c498ed590403b7e510b69e474df  # 2026.4.1
     with:
       directory: m5stack-atom-echo
     secrets: inherit
@@ -67,7 +67,7 @@ jobs:
     name: Promote to Production
     if: github.event.release.prerelease == false
     needs: upload-to-r2
-    uses: esphome/workflows/.github/workflows/promote-r2.yml@3c4e8446aa1029f1c346a482034b3ee1489077ca  # 2026.4.0
+    uses: esphome/workflows/.github/workflows/promote-r2.yml@025a1e6255610c498ed590403b7e510b69e474df  # 2026.4.1
     with:
       version: ${{ github.event.release.tag_name }}
       directory: m5stack-atom-echo
