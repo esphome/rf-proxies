@@ -1,0 +1,76 @@
+name: Publish
+
+on:
+  release:
+    types: [published]
+
+concurrency:
+  group: publish-${{ github.event.release.tag_name }}
+  cancel-in-progress: false
+
+jobs:
+  prepare-artifacts:
+    name: Prepare artifacts from release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download release assets
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          mkdir -p assets
+          gh release download "${{ github.event.release.tag_name }}" \
+            --repo "${{ github.repository }}" \
+            --dir assets
+
+      - name: Reconstruct per-device artifact layout
+        run: |
+          set -euo pipefail
+          version="${{ github.event.release.tag_name }}"
+          # Release attachments are flat (<device>.manifest.json + binaries).
+          # Recreate the `<device>/<version>/{manifest.json,*.bin}` layout
+          # that upload-to-r2 / promote-r2 expect from a build.yml run.
+          # The manifests have already been patched with the final release
+          # body by release.yml prior to publishing, so we copy them as-is.
+          for manifest in assets/*.manifest.json; do
+            device=$(basename "${manifest}" .manifest.json)
+            target="output/${device}/${version}"
+            mkdir -p "${target}"
+            cp "${manifest}" "${target}/manifest.json"
+            # Copy every binary referenced by the manifest (ota + parts).
+            jq -r '[
+              (.builds[]?.ota.path // empty),
+              (.builds[]?.parts[]?.path // empty)
+            ] | unique | .[]' "${target}/manifest.json" \
+              | while IFS= read -r bin; do
+                  [[ -z "${bin}" ]] && continue
+                  cp "assets/${bin}" "${target}/${bin}"
+                done
+          done
+
+      - name: Upload m5stack-atom-echo artifact
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a  # v7.0.1
+        with:
+          name: m5stack-atom-echo
+          path: output/m5stack-atom-echo
+          if-no-files-found: error
+
+  upload-to-r2:
+    name: Upload to R2
+    needs: prepare-artifacts
+    uses: esphome/workflows/.github/workflows/upload-to-r2.yml@3c4e8446aa1029f1c346a482034b3ee1489077ca  # 2026.4.0
+    with:
+      directory: m5stack-atom-echo
+    secrets: inherit
+
+  promote-prod:
+    name: Promote to Production
+    if: github.event.release.prerelease == false
+    needs: upload-to-r2
+    uses: esphome/workflows/.github/workflows/promote-r2.yml@3c4e8446aa1029f1c346a482034b3ee1489077ca  # 2026.4.0
+    with:
+      version: ${{ github.event.release.tag_name }}
+      directory: m5stack-atom-echo
+      channel: production
+      manifest-filename: manifest.json
+    secrets: inherit
