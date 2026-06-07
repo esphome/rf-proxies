@@ -4,6 +4,7 @@ esphome:
   # Automatically add the mac address to the name
   # so you can use a single firmware for all devices
   name_add_mac_suffix: true
+  min_version: 2026.5.0
 
 esp32:
   board: m5stack-atom
