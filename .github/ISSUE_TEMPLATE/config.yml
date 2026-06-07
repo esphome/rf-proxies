@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Generic ESPHome issue
+    url: https://github.com/esphome/esphome/issues
+    about: Report an issue with ESPHome compiling unrelated to these specific firmwares.
+  - name: Feature request
+    url: https://github.com/esphome/feature-requests/issues
+    about: Request a new feature for ESPHome.
+  - name: Device configuration request
+    url: https://github.com/esphome/devices.esphome.io/issues
+    about: Request or contribute a configuration for a device not hosted in this repository.
