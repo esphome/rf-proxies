@@ -9,3 +9,15 @@ contact_links:
   - name: Device configuration request
     url: https://github.com/esphome/devices.esphome.io/issues
     about: Request or contribute a configuration for a device not hosted in this repository.
+  - name: Bluetooth Proxy issue
+    url: https://github.com/esphome/bluetooth-proxies/issues
+    about: Please search for or create an issue in the bluetooth-proxies repository.
+  - name: Infrared Proxy issue
+    url: https://github.com/esphome/infrared-proxies/issues
+    about: Please search for or create an issue in the infrared-proxies repository.
+  - name: Voice Assistant issue
+    url: https://github.com/esphome/wake-word-voice-assistant/issues
+    about: Please search for or create an issue in the wake-word-voice-assistant repository.
+  - name: Media Player issue
+    url: https://github.com/esphome/media-players/issues
+    about: Please search for or create an issue in the media-players repository.
