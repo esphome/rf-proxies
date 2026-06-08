@@ -1,0 +1,46 @@
+name: RF proxy firmware issue
+description: Report an issue with one of the RF proxy device firmwares in this repository.
+body:
+  - type: markdown
+    attributes:
+      value: |
+        This issue form is for reporting bugs with the RF proxy device firmwares hosted in this repository.
+
+        If you are experiencing issues with the ESPHome Builder or other firmware, please report them in the correct repository.
+
+  - type: textarea
+    validations:
+      required: true
+    id: problem
+    attributes:
+      label: The problem
+      description: >-
+        Describe the issue you are experiencing here to communicate to the
+        maintainers. Tell us what you were trying to do and what happened.
+
+        Provide a clear and concise description of what the problem is.
+
+  - type: dropdown
+    validations:
+      required: true
+    id: device
+    attributes:
+      label: Which device are you using?
+      options:
+        - M5Stack Atom Echo
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Anything in the logs that might be useful for us?
+      description: For example, error message, or stack traces. Serial or USB logs are much more useful than WiFi logs.
+      render: txt
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional information
+      description: >
+        If you have any additional information for us, use the field below.
+        Please note, you can attach screenshots or screen recordings here, by
+        dragging and dropping files in the field below.
