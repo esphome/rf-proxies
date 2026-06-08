@@ -65,7 +65,7 @@ jobs:
     with:
       files: |
         m5stack-atom-echo/m5stack-atom-echo.factory.yaml
-      esphome-version: dev  # TODO: pin to 2026.5.0 once released (radio_frequency component)
+      esphome-version: 2026.5.3
       release-summary: ${{ needs.determine-version.outputs.summary }}
       release-url: ${{ needs.determine-version.outputs.url }}
       release-version: ${{ needs.determine-version.outputs.version }}
